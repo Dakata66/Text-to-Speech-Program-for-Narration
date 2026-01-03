@@ -1,0 +1,26 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+int main() {
+    char text[300];
+    char command[600];
+
+    printf("Enter text to speak: ");
+    fgets(text, sizeof(text), stdin);
+
+    // Remove newline
+    text[strcspn(text, "\n")] = 0;
+
+    // PowerShell TTS command
+    sprintf(command,
+        "powershell -Command \"Add-Type -AssemblyName System.Speech; "
+        "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; "
+        "$speak.Speak('%s')\"",
+        text);
+
+    system(command);
+
+    return 0;
+}
+//0

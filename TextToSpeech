@@ -1,26 +1,53 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <windows.h>
+
+void color(int c) {
+    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), c);
+}
+
+void speak(const char* text) {
+    char cmd[2048];
+    snprintf(cmd, sizeof(cmd), 
+             "powershell -Command \"$s=New-Object System.Speech.Synthesis.SpeechSynthesizer;$s.Speak('%s')\"", 
+             text);
+    system(cmd);
+}
 
 int main() {
-    char text[300];
-    char command[600];
-
-    printf("Enter text to speak: ");
-    fgets(text, sizeof(text), stdin);
-
-    // Remove newline
-    text[strcspn(text, "\n")] = 0;
-
-    // PowerShell TTS command
-    sprintf(command,
-        "powershell -Command \"Add-Type -AssemblyName System.Speech; "
-        "$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer; "
-        "$speak.Speak('%s')\"",
-        text);
-
-    system(command);
-
+    char text[1024], choice[10];
+    
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
+    while (1) {
+        system("cls");
+        color(11); printf("=== Text-To-Speech ===\n"); color(7);
+        printf("\n");
+        color(10); printf("1. Изговаряне на текст\n"); color(7);
+        color(12); printf("2. Изход\n"); color(7);
+        printf("\nИзбор: ");
+        
+        fgets(choice, sizeof(choice), stdin);
+        choice[strcspn(choice, "\n")] = 0;
+        
+        if (strcmp(choice, "2") == 0) break;
+        
+        if (strcmp(choice, "1") == 0) {
+            printf("\nВъведете текст: ");
+            fgets(text, sizeof(text), stdin);
+            text[strcspn(text, "\n")] = 0;
+            
+            if (strlen(text) > 0) {
+                speak(text);
+                color(14); printf("\nГотово!\n"); color(7);
+                printf("\nНатиснете Enter...");
+                getchar();
+            }
+        }
+    }
+    
+    printf("\nДовиждане!\n");
     return 0;
 }
-//0

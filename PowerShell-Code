@@ -1,1 +1,27 @@
-Add-Type -AssemblyName System.Speech $speak = New-Object System.Speech.Synthesis.SpeechSynthesizer Write-Host "=== Text-To-Speech ===" -ForegroundColor Cyan Write-Host "" while ($true) { Write-Host "1. Изговаряне на текст" -ForegroundColor Green Write-Host "2. Изход" -ForegroundColor Red Write-Host "" $choice = Read-Host "Избор" if ($choice -eq "2") { break } if ($choice -eq "1") { $text = Read-Host "Въведете текст" $speak.Speak($text) Write-Host "Готово!" -ForegroundColor Yellow Write-Host "" } }
+Add-Type -AssemblyName System.Speech
+
+$speak = New-Object System.Speech.Synthesis.SpeechSynthesizer
+
+Write-Host "=== Text-To-Speech ===" -ForegroundColor Cyan
+Write-Host ""
+
+while ($true) {
+
+    Write-Host "1. Изговаряне на текст" -ForegroundColor Green
+    Write-Host "2. Изход" -ForegroundColor Red
+    Write-Host ""
+
+    $choice = Read-Host "Избор"
+
+    if ($choice -eq "2") {
+        break
+    }
+
+    if ($choice -eq "1") {
+        $text = Read-Host "Въведете текст"
+        $speak.Speak($text)
+
+        Write-Host "Готово!" -ForegroundColor Yellow
+        Write-Host ""
+    }
+}
